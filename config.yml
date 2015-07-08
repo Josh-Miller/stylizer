@@ -1,0 +1,7 @@
+footerPath: 'src/partials/footer.hbs'
+headerPath: 'src/partials/head.hbs'
+
+compiler: 'handlebars'
+
+plugins:
+  - getPatterns
