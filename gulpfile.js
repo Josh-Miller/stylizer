@@ -10,23 +10,10 @@ var gulp = require('gulp'),
     _ = require('lodash'),
     header = require('gulp-header'),
     footer = require('gulp-footer'),
-    injector = require('./core/compiler/injector'),
+    events = require('events'),
     cons = require('consolidate');
 
 var dir = requireDir('./core/compiler');
-
-// Compile templates
-gulp.task('compile', function() {
-  gulp.src(__dirname + '/src/patterns/**/**/*.html')
-    .pipe(header('{{> head}}'))
-    .pipe(footer('{{> footer}}'))
-    .pipe(hb({
-      data: './src/patterns/data/*.{js,json,yml}',
-      helpers: './src/patterns/helpers/*.js',
-      partials: './src/partials/*.hbs'
-    }))
-    .pipe(gulp.dest('./public/patterns'));
-});
 
 /**
  * Bundle JS
@@ -90,11 +77,13 @@ gulp.task('stylizer', function(){
   _.forEach(stylizer_engine.config().plugins, function(n, key) {
     var plugin = require(__dirname + '/plugins/stylizer.' + n);
 
-    stylizer_engine.add(n, plugin);
+    stylizer_engine.register(n, plugin);
   });
 
+  stylizer_engine.getPatterns(function(patterns) {
+    _.forEach(patterns, function(n, key) {
+      stylizer_engine.compile(n.template, stylizer_engine.partials, stylizer_engine.data());
+    });
+  });
 
-  var patterns = stylizer_engine.getPatterns();
-
-  stylizer_engine.buildFiles(patterns);
 });

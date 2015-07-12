@@ -4,4 +4,4 @@ headerPath: 'src/partials/head.hbs'
 compiler: 'handlebars'
 
 plugins:
-  - getPatterns
+  - handlebars

@@ -6,7 +6,7 @@ var diveSync = require('diveSync'),
     readYaml = require('read-yaml'),
     _ = require('lodash'),
     Pattern = require('./pattern'),
-    injector = require('./injector');
+    events = require('events');
 
 var paths = {
   plugin: __dirname + '/../../plugins/stylizer.',
@@ -14,48 +14,45 @@ var paths = {
 
 var Stylizer = function() {
 
-  injector.register('stylizer', this.compile);
-
   this.config = function() {
     return readYaml.sync(__dirname + '/../../config.yml');
   }
-  this.add = function(name, plugin) {
-    this.prototype[name] = plugin();
+
+  this.plugins = {};
+
+  this.register = function(n, plugin) {
+    this.plugins[plugin.extend] = {plugin: plugin};
   }
+
+  this.on('preCompile', function(pattern) {
+    _.forEach(this.plugins, function(n, key) {
+      if (n.plugin.extend === 'preCompile') {
+        pattern.compiled = n.plugin.init(pattern);
+      }
+    });
+    this.buildPattern(pattern);
+  });
+
   this.patterns = [];
   this.partials = {};
 }
 
-// Stylizer.prototype.compile = function(compileFunctions) {
-//   _.foreach(compileFunctions, function(i)) {
-//     i();
-//   }
-// }
+Stylizer.prototype.__proto__ = events.EventEmitter.prototype;
 
 Stylizer.prototype.data = function() {
   var data = readYaml.sync(__dirname + '/../../src/data/data.yml');
+  this.emit('preData', data);
 
   return data;
 }
 
-Stylizer.prototype.compile = function(source, partials, data) {
+Stylizer.prototype.compile = function(template, partials, data, cb) {
 
-  var config = readYaml.sync(__dirname + '/../../config.yml');
+  this.emit('preCompile', {template: template, partials: partials, data: data});
 
-  if (!config.compiler) {
-    config.compiler = 'handlebars';
-  }
-
-  if (!partials) {
-    partials = {};
-  }
-
-  var compiler = require(paths.plugin + config.compiler);
-
-  return compiler(source, partials, data);
 };
 
-Stylizer.prototype.getPatterns = function(getPatterns) {
+Stylizer.prototype.getPatterns = function(cb) {
   var _stylizer = this;
 
   diveSync(__dirname + '/../../src/patterns', function(err, file){
@@ -76,7 +73,7 @@ Stylizer.prototype.getPatterns = function(getPatterns) {
     var footerTemplate = fs.readFileSync(footerPath, 'utf8');
     pattern.header = Stylizer.prototype.compile(headerTemplate, '', _stylizer.data());
     pattern.footer = Stylizer.prototype.compile(footerTemplate, '', _stylizer.data());
-
+console.log(pattern.header);
     // Naming
     var fileNameArr = file.split('/');
     var fileNames = _.takeRight(fileNameArr, 3);
@@ -99,16 +96,13 @@ Stylizer.prototype.getPatterns = function(getPatterns) {
   });
 
   // Build the files
-  return _stylizer;
+  cb(_stylizer.patterns);
 };
 
-Stylizer.prototype.buildFiles = function() {
-  var _stylizer = this;
-  _.forEach(_stylizer.patterns, function(n, key) {
+Stylizer.prototype.buildPattern = function(pattern) {
 
-    fs.outputFileSync(__dirname + '/../../public/patterns/' + n.type + '/' + n.subType + '/' + n.fileName, n.header + Stylizer.prototype.compile(n.template, _stylizer.partials, _stylizer.data()) + n.footer);
-
-  });
+  console.log(pattern.compiled);
+  fs.outputFileSync(__dirname + '/../../public/patterns/' + pattern.type + '/' + pattern.subType + '/' + pattern.fileName, pattern.header + pattern.compiled + pattern.footer);
 };
 
 Stylizer.prototype.export = function() {
