@@ -5,3 +5,4 @@ compiler: 'handlebars'
 
 plugins:
   - handlebars
+  - getPatterns

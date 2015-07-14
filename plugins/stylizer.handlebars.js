@@ -5,13 +5,15 @@ var stylizerHandlebars = function(pattern) {
 
   var self = {
     extend: 'preCompile',
-    init: function(pattern) {
+    init: function(pattern, cb) {
+      console.log(pattern, 'handlebars');
       _.forEach(pattern.partials, function(n, key) {
         handlebars.registerPartial(key, n);
       });
       var template = handlebars.compile(pattern.template);
-
-      return template(pattern.data);
+      console.log(pattern);
+      // return template(pattern.data);
+      cb(template(pattern.data));
     }
   }
 

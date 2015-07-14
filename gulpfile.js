@@ -81,9 +81,26 @@ gulp.task('stylizer', function(){
   });
 
   stylizer_engine.getPatterns(function(patterns) {
-    _.forEach(patterns, function(n, key) {
-      stylizer_engine.compile(n.template, stylizer_engine.partials, stylizer_engine.data());
+
+    _.forEach(patterns, function(pattern, key) {
+
+      // Compile patterns
+      stylizer_engine.compile(pattern.template, stylizer_engine.partials, stylizer_engine.data(), function(compiled) {
+        pattern.compiled = compiled;
+
+        // Compile header
+        stylizer_engine.compile(pattern.header, '', stylizer_engine.data(), function(compiled) {
+          pattern.header = compiled;
+
+          // Compile footer
+          stylizer_engine.compile(pattern.footer, '', stylizer_engine.data(), function(compiled) {
+            pattern.footer = compiled;
+            stylizer_engine.buildPattern(pattern);
+          });
+        });
+      });
     });
   });
+
 
 });

@@ -10,7 +10,10 @@
     "styleguide"
   ],
   "author": "Josh Miller",
-  "license": "MIT",
+  "license": "gpl-2.0",
+  "bin": {
+    "stylizer": "cli.js"
+  },
   "devDependencies": {
     "consolidate": "^0.13.1",
     "diveSync": "^0.3.0",
@@ -30,13 +33,12 @@
     "read-yaml": "^1.0.0",
     "require-dir": "^0.3.0",
     "source": "0.0.3",
-    "vinyl-source-stream": "^1.1.0",
-    "yaml-to-json": "^0.3.0"
+    "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
     "browserify": "^10.2.4",
+    "commander": "^2.8.1",
     "gulp": "^3.9.0",
-    "handlebars": "^3.0.3",
-    "q": "^1.4.1"
+    "handlebars": "^3.0.3"
   }
 }

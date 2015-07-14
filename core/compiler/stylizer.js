@@ -24,13 +24,27 @@ var Stylizer = function() {
     this.plugins[plugin.extend] = {plugin: plugin};
   }
 
-  this.on('preCompile', function(pattern) {
+  this.on('preCompile', function(pattern, cb) {
     _.forEach(this.plugins, function(n, key) {
       if (n.plugin.extend === 'preCompile') {
-        pattern.compiled = n.plugin.init(pattern);
+        n.plugin.init(pattern, function(e) {
+          cb(e)
+        });
       }
     });
-    this.buildPattern(pattern);
+  });
+
+  this.on('postPattern', function(pattern, cb) {
+    _.forEach(this.plugins, function(n, key) {
+      if (n.plugin.extend === 'postPattern') {
+        n.plugin.init(pattern, function(e) {
+          cb(e)
+        });
+      }
+    });
+    if (!_.has(this.plugins, 'postPattern')) {
+      cb(pattern);
+    }
   });
 
   this.patterns = [];
@@ -44,16 +58,14 @@ Stylizer.prototype.data = function() {
   this.emit('preData', data);
 
   return data;
-}
-
-Stylizer.prototype.compile = function(template, partials, data, cb) {
-
-  this.emit('preCompile', {template: template, partials: partials, data: data});
-
 };
 
 Stylizer.prototype.getPatterns = function(cb) {
   var _stylizer = this;
+
+  var rootPath = __dirname + '/../../';
+  var headerPath = this.config().hasOwnProperty('headerPath') ? this.config().headerPath : rootPath + _.trim('src/partials/head.hbs'),
+      footerPath = this.config().hasOwnProperty('footerPath') ? this.config().footerPath : rootPath + _.trim('src/partials/footer.hbs');
 
   diveSync(__dirname + '/../../src/patterns', function(err, file){
 
@@ -62,18 +74,14 @@ Stylizer.prototype.getPatterns = function(cb) {
       return;
     }
 
-    var rootPath = __dirname + '/../../',
-        headerPath = rootPath + _.trim(_stylizer.config().headerPath),
-        footerPath = rootPath + _stylizer.config().footerPath;
-
     var pattern = new Pattern;
 
     // Pattern header/footer
     var headerTemplate = fs.readFileSync(headerPath, 'utf8');
     var footerTemplate = fs.readFileSync(footerPath, 'utf8');
-    pattern.header = Stylizer.prototype.compile(headerTemplate, '', _stylizer.data());
-    pattern.footer = Stylizer.prototype.compile(footerTemplate, '', _stylizer.data());
-console.log(pattern.header);
+    pattern.header = headerTemplate;
+    pattern.footer = footerTemplate;
+
     // Naming
     var fileNameArr = file.split('/');
     var fileNames = _.takeRight(fileNameArr, 3);
@@ -91,17 +99,27 @@ console.log(pattern.header);
 
     // Push it
     pattern.template = currentPattern;
-    _stylizer.patterns.push(pattern);
+
+    // Future postprocessor of getPatterns()
+    _stylizer.emit('postPattern', pattern, function(pattern) {
+      _stylizer.patterns.push(pattern);
+    });
 
   });
 
-  // Build the files
   cb(_stylizer.patterns);
+};
+
+Stylizer.prototype.compile = function(template, partials, data, cb) {
+console.log('compile', partials);
+  this.emit('preCompile', {template: template, partials: partials, data: data}, function(compiled) {
+    cb(compiled);
+  });
+
 };
 
 Stylizer.prototype.buildPattern = function(pattern) {
 
-  console.log(pattern.compiled);
   fs.outputFileSync(__dirname + '/../../public/patterns/' + pattern.type + '/' + pattern.subType + '/' + pattern.fileName, pattern.header + pattern.compiled + pattern.footer);
 };
 
