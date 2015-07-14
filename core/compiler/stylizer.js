@@ -111,7 +111,7 @@ Stylizer.prototype.getPatterns = function(cb) {
 };
 
 Stylizer.prototype.compile = function(template, partials, data, cb) {
-console.log('compile', partials);
+
   this.emit('preCompile', {template: template, partials: partials, data: data}, function(compiled) {
     cb(compiled);
   });

@@ -82,6 +82,6 @@ if (program.build) {
   partials.menu = fs.readFileSync('./core/views/partials/menu.hbs', 'utf8');
 
   _stylizer.compile(pattern.template, partials, {menuTree: tree.children}, function(compiled) {
-    console.log(compiled, 'we made it!!!');
+
   });
 }
