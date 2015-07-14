@@ -67,8 +67,7 @@ if (program.patterns) {
 // Build app
 if (program.build) {
   var Files = require('./core/files'),
-    _ = require('lodash'),
-    fs = require('fs');
+    _ = require('lodash');
 
   var tree = Files.dirTree('./src/patterns');
   createUri(tree.children);
@@ -78,10 +77,16 @@ if (program.build) {
   var pattern = new Pattern;
   var partials = {};
 
+  _.forEach(_stylizer.config().plugins, function(n, key) {
+    var plugin = require(__dirname + '/plugins/stylizer.' + n);
+
+    _stylizer.register(n, plugin);
+  });
+
   pattern.template = fs.readFileSync('./core/index.html', 'utf8');
   partials.menu = fs.readFileSync('./core/views/partials/menu.hbs', 'utf8');
 
   _stylizer.compile(pattern.template, partials, {menuTree: tree.children}, function(compiled) {
-
+    fs.outputFileSync(__dirname + '/public/index.html', compiled);
   });
 }

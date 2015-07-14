@@ -15,23 +15,14 @@
     "stylizer": "cli.js"
   },
   "devDependencies": {
-    "consolidate": "^0.13.1",
     "diveSync": "^0.3.0",
     "fs-extra": "^0.20.1",
     "glob": "^5.0.10",
     "gulp": "^3.9.0",
-    "gulp-build": "^0.5.3",
-    "gulp-footer": "^1.0.5",
-    "gulp-handlebars": "^4.0.0",
-    "gulp-hb": "^2.6.0",
-    "gulp-header": "^1.2.2",
-    "gulp-template": "^3.0.0",
-    "gulp-wrap": "^0.11.0",
     "handlebars": "^3.0.3",
     "lodash": "^3.9.3",
     "path": "^0.11.14",
     "read-yaml": "^1.0.0",
-    "require-dir": "^0.3.0",
     "source": "0.0.3",
     "vinyl-source-stream": "^1.1.0"
   },
