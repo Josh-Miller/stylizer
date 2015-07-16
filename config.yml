@@ -1,6 +1,8 @@
 footerPath: 'src/partials/footer.hbs'
 headerPath: 'src/partials/head.hbs'
 
+destination: '/public/patterns'
+
 compiler: 'handlebars'
 
 plugins:

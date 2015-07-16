@@ -1,9 +1,9 @@
 
 var Test = function() {
   var self = {
-    extend: 'postPattern',
+    extend: 'prePattern',
     init: function(pattern, cb) {
-      pattern.footer = 'FOOOTER2</body></html>';
+      pattern.footer = 'FOOOTER YAH</body></html>';
       cb(pattern);
     }
   }

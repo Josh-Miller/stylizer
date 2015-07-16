@@ -3,18 +3,24 @@
   "version": "0.0.0",
   "description": "Style guide generator ",
   "main": "index.js",
+  "repository": "Josh-Miller/stylizer",
   "scripts": {
     "test": "test stylizer"
   },
   "keywords": [
     "styleguide"
   ],
-  "author": "Josh Miller",
+  "author": {
+    "name": "Josh Miller",
+    "email": "",
+    "url": "http://josh-miller.me"
+  },
   "license": "gpl-2.0",
   "bin": {
     "stylizer": "cli.js"
   },
   "devDependencies": {
+    "chokidar": "^1.0.3",
     "diveSync": "^0.3.0",
     "fs-extra": "^0.20.1",
     "glob": "^5.0.10",
@@ -28,6 +34,7 @@
   },
   "dependencies": {
     "browserify": "^10.2.4",
+    "chalk": "^1.1.0",
     "commander": "^2.8.1",
     "gulp": "^3.9.0",
     "handlebars": "^3.0.3"

@@ -2,8 +2,7 @@
 
 var pattern = function() {
   this.name = '';
-  this.type = '';
-  this.subType = '';
+  this.parents = [];
   this.fileName = '';
   this.data = {};
   this.template = '';

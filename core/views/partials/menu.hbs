@@ -14,6 +14,26 @@
                 {{#each this.children}}
                   <li>
                     <a class="{{this.type}}" href="{{this.uri}}">{{this.name}}</a>
+
+                    {{#if this.children}}
+                      <ul>
+                        {{#each this.children}}
+                          <li>
+                            <a class="{{this.type}}" href="{{this.uri}}">{{this.name}}</a>
+
+                            {{#if this.children}}
+                              <ul>
+                                {{#each this.children}}
+                                  <li>
+                                    <a class="{{this.type}}" href="{{this.uri}}">{{this.name}}</a>
+                                  </li>
+                                {{/each}}
+                              </ul>
+                            {{/if}}
+                          </li>
+                        {{/each}}
+                      </ul>
+                    {{/if}}
                   </li>
                 {{/each}}
               </ul>

@@ -11,7 +11,8 @@ var stylizerHandlebars = function(pattern) {
       });
       var template = handlebars.compile(pattern.template);
 
-      cb(template(pattern.data));
+      // cb(template(pattern.data));
+      return template(pattern.data);
     }
   }
 
