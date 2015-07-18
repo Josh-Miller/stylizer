@@ -46,17 +46,37 @@ var Stylizer = function() {
     }
   };
 
+  this.preData = function(patternName, cb) {
+    _.forEach(this.plugins, function(n, key) {
+      if (n.plugin.extend === 'preData') {
+        var patternData = n.plugin.init(patternName);
+        cb(patternData);
+      }
+    });
+  };
+
+  this._export = function(pattern) {
+    _.forEach(this.plugins, function(n, key) {
+      if (n.plugin.extend === '_export') {
+        n.plugin.init(pattern, function(e) {
+          cb(e)
+        });
+      }
+    });
+  };
+
   this.patterns = [];
   this.partials = {};
 }
 
 Stylizer.prototype.__proto__ = events.EventEmitter.prototype;
 
-Stylizer.prototype.data = function() {
+Stylizer.prototype.data = function(patternName) {
   var data = readYaml.sync(__dirname + '/../../src/data/data.yml');
 
-
-  // this.postData();
+  this.preData(patternName, function(patternData) {
+    data = _.assign({}, data, patternData);
+  });
 
   return data;
 };
@@ -124,8 +144,8 @@ Stylizer.prototype.build = function(dest, name, data) {
   fs.outputFileSync(dest + '/' + name, data);
 };
 
-Stylizer.prototype.export = function() {
-
+Stylizer.prototype.export = function(pattern) {
+  this._export(pattern);
 };
 
 module.exports = Stylizer;

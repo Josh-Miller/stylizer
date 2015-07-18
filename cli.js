@@ -11,6 +11,7 @@ var program = require('commander'),
 
 // CLI
 var cliPatterns = require('./core/cli/patterns'),
+    cliExport = require('./core/cli/export'),
     cliBuild = require('./core/cli/build');
 var log = console.log.bind(console);
 
@@ -19,6 +20,7 @@ program
   .option('-b, --build', 'Build app')
   .option('-p, --patterns', 'Compile patterns')
   .option('-w, --watch', 'Watch and compile patterns on change')
+  .option('-e, --export', 'Export patterns')
   .parse(process.argv);
 
 var Stylizer = require('./core/compiler/stylizer.js');
@@ -34,10 +36,15 @@ if (program.build) {
   cliBuild.run();
 }
 
+// Export app
+if (program.export) {
+  cliExport.run();
+}
+
 // Watch patterns
 if (program.watch) {
   log(chalk.green('Watching'));
-  var watcher = chokidar.watch(__dirname + '/src/patterns', {
+  var watcher = chokidar.watch(__dirname + '/src', {
     usePolling: true,
     persistent: true,
     ignored: /[\/\\]\./,

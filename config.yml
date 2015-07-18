@@ -8,3 +8,5 @@ compiler: 'handlebars'
 plugins:
   - handlebars
   - getPatterns
+  - patternData
+  - drupalExport

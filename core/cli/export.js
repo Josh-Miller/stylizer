@@ -1,7 +1,7 @@
 var Stylizer = require('../compiler/stylizer.js'),
     _ = require('lodash');
 
-var Patterns = function() {
+var Export = function() {
   this.run = function() {
     var _stylizer = new Stylizer;
 
@@ -27,8 +27,7 @@ var Patterns = function() {
             _stylizer.compile(pattern.footer, '', _stylizer.data(), function(compiled) {
               pattern.footer = compiled;
 
-              var dest = __dirname + '/../../' + _stylizer.config().destination + '/' + pattern.parents.join('/');
-              _stylizer.build(dest, pattern.fileName, pattern.header + pattern.compiled + pattern.footer);
+              _stylizer.export(pattern);
             });
           });
         });
@@ -37,4 +36,4 @@ var Patterns = function() {
   }
 }
 
-module.exports = new Patterns;
+module.exports = new Export;
