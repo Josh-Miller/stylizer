@@ -6,7 +6,10 @@ destination: '/public/patterns'
 compiler: 'handlebars'
 
 plugins:
-  - handlebars
-  - getPatterns
-  - patternData
-  - drupalExport
+  stylizer.handlebars:
+  stylizer.getPatterns:
+  stylizer.patternData:
+  stylizer.drupalExport:
+  sassColors/sassColors:
+    settings:
+      file: './_colors.scss'

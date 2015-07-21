@@ -18,10 +18,10 @@ var Stylizer = function() {
     return readYaml.sync(__dirname + '/../../config.yml');
   }
 
-  this.plugins = {};
+  this.plugins = [];
 
-  this.register = function(n, plugin) {
-    this.plugins[plugin.extend] = {plugin: plugin};
+  this.register = function(name, plugin, settings) {
+    this.plugins.push({name: name, plugin: plugin, settings: settings});
   }
 
   this.preCompile = function(pattern, cb) {
@@ -68,8 +68,6 @@ var Stylizer = function() {
   this.patterns = [];
   this.partials = {};
 }
-
-Stylizer.prototype.__proto__ = events.EventEmitter.prototype;
 
 Stylizer.prototype.data = function(patternName) {
   var data = readYaml.sync(__dirname + '/../../src/data/data.yml');

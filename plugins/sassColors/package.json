@@ -1,0 +1,14 @@
+{
+  "name": "sassColors",
+  "version": "0.0.0",
+  "description": "Parse sass variables",
+  "main": "sassColors.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "sass-to-js": "^1.1.0"
+  }
+}

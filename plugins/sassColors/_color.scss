@@ -1,0 +1,48 @@
+//
+// @file
+// Color variables.
+//
+@import "../utilities/blend-mode";
+
+//
+// Colors
+//
+$white:             #ffffff;
+$black:             #000000;
+
+$gray-white:        #f0f0f0;
+$gray-lightest:     #dbdbdb;
+$gray-lighter:      #c3c3c3;
+$gray-light:        #b3b3b3;
+$gray:              #585858;
+$gray-dark:         #6d6d6d;
+$gray-darker:       #434343;
+$gray-darkest:      #2e2e2e;
+$gray-black:        #141414;
+
+
+$red-light:         lighten(#970f0f, 10%);
+$red:               #970f0f;
+$red-dark:          #8c1515;
+$red-darker:        #820909;
+$red-darkest:       #5c0606;
+$red-black:         darken(#5c0606, 85%);
+
+$green:             #9cc524;
+
+$blue:              #4168b6;
+
+//
+// Semantic colors
+//
+$clr-neutral:      $gray-light;      // Default nuetral color
+$clr-text:         $gray-darkest;     // Default body copy color
+$clr-link:         $red-dark;            // Default link color
+$clr-accent:       $green;           // Default accent color
+$clr-border:       $gray-lighter;    // Default border and required color
+$clr-status:       $green;      // Default status color
+$clr-warning:      $blue;            // Default warning color
+$clr-error:        $red;             // Default error and required color
+$clr-table-border: $gray-light;      // Default table border color
+$clr-table-odd:    $gray-white;      // Default table odd row color
+$clr-table-even:   $white;           // Default table even row color

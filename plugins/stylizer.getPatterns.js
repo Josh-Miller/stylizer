@@ -3,7 +3,7 @@ var Test = function() {
   var self = {
     extend: 'prePattern',
     init: function(pattern, cb) {
-      pattern.footer = 'FOOOTER YAH</body></html>';
+      pattern.footer = 'FOOOTER test</body></html>';
       cb(pattern);
     }
   }

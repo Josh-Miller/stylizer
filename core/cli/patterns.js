@@ -6,9 +6,19 @@ var Patterns = function() {
     var _stylizer = new Stylizer;
 
     _.forEach(_stylizer.config().plugins, function(n, key) {
-      var plugin = require('../../plugins/stylizer.' + n);
+      var settings = {};
 
-      _stylizer.register(n, plugin);
+      //  if plugin is a folder
+      if (key.indexOf('/') >= 0) {
+        var plugin = require('../../plugins/' + key);
+      } else {
+        var plugin = require('../../plugins/' + key);
+      }
+      if (n) {
+        settings = n;
+      }
+
+      _stylizer.register(key, plugin, settings);
     });
 
     _stylizer.getPatterns(function(patterns) {
