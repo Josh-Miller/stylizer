@@ -1,3 +1,5 @@
+"use strict";
+
 // var sass2js = require('sass-to-js');
 
 var SassPatterns = function() {
