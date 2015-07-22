@@ -32,9 +32,15 @@ var Build = function() {
     var partials = {};
 
     _.forEach(_stylizer.config().plugins, function(n, key) {
-      var plugin = require('../../plugins/stylizer.' + n);
 
-      _stylizer.register(n, plugin);
+      var settings = {};
+      var plugin = require('../../plugins/' + key);
+
+      if (n) {
+        settings = n;
+      }
+
+      _stylizer.register(n, plugin, settings);
     });
 
     pattern.template = fs.readFileSync(__dirname + '/../index.html', 'utf8');

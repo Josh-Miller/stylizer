@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": "Josh-Miller/stylizer",
   "scripts": {
-    "test": "test stylizer"
+    "test": "mocha ./tests/index"
   },
   "keywords": [
     "styleguide"
