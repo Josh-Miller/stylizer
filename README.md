@@ -1,5 +1,8 @@
 # Stylizer
 
+# DEPRECATED
+This package has been replaced, see [Stylize](https://github.com/Josh-Miller/stylize)
+
 [![Build Status](https://travis-ci.org/Josh-Miller/stylizer.svg?branch=master)](https://travis-ci.org/Josh-Miller/stylizer)
 
 An extendable and pluggable styleguide pattern framework. (Very much in alpha)
